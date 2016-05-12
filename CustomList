@@ -1,0 +1,110 @@
+package com.company;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class CustomList {
+    public static void main(String[] args) {
+
+        LinkedList lList = new LinkedList("FirstLine");
+        lList.getElements();
+        lList.add("SecondLine");
+        lList.getElements();
+        lList.add("ThirdLine");
+        lList.getElements();
+        lList.remove("ThirdLine");              //removes a element from the list
+        lList.getElements();                    //prints how much elements you have
+        lList.totalInformation();               //gives you the count() and the elements
+        System.out.println(lList.length());     // gives you the count
+        System.out.println(lList.indexOf(2));   //gives you the element on oisition "2"
+    }
+}
+
+class LinkNode{
+    String data;
+    LinkNode next;
+    private int element = 0;
+
+    public LinkNode(String text, int element){
+        this.data = text;
+        this.element = element;
+    }
+}
+
+class LinkedList{
+    LinkNode head;
+    private int elements = 0;
+    StringBuilder elementNames = new StringBuilder();
+
+    public LinkedList(String item){
+        this.head = new LinkNode(item, this.elements);
+        this.elementNames.append(item + "+");
+        this.elements++;
+    }
+
+    public void totalInformation(){
+        System.out.println("The number of total elements is: " + this.elements);
+        Pattern pattern = Pattern.compile("[^+]+");
+        String sbString = this.elementNames.toString();
+        Matcher matcher = pattern.matcher(sbString);
+        int count = 0;
+        while (matcher.find()) {
+            System.out.printf("Element on position %d is: %s\n", count, matcher.group());
+            count++;
+        }
+    }
+
+    public void getElements(){
+        Pattern pattern = Pattern.compile("[^+]+");
+        String sbString = this.elementNames.toString();
+        Matcher matcher = pattern.matcher(sbString);
+        int spaceIndent = 0;
+        while (matcher.find()) {
+            if (spaceIndent==0){
+                System.out.print(matcher.group());
+            }else{
+
+                System.out.print(", " + matcher.group());
+            }
+
+            spaceIndent=1;
+        }
+        System.out.println();
+    }
+
+    public void add(String item){
+        this.head = new LinkNode(item, this.elements);
+        this.elementNames.append(item + "+");
+        this.elements++;
+    }
+
+    public void remove(String item){
+        int i = this.elementNames.indexOf(item);
+        if (i != -1) {
+            this.elementNames.delete(i, i + item.length() + 1);
+        }
+        this.elements--;
+    }
+
+    public int length(){
+        return this.elements;
+    }
+
+    public String indexOf(int indexOfString){
+        String wantedString = null;
+        Pattern pattern = Pattern.compile("[^+]+");
+        String sbString = this.elementNames.toString();
+        Matcher matcher = pattern.matcher(sbString);
+        int count = 0;
+        while (matcher.find()) {
+            if (count==indexOfString - 1){
+                wantedString = matcher.group();
+                break;
+            }
+
+            count++;
+        }
+
+        return wantedString;
+    }
+}
